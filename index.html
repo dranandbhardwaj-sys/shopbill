@@ -4,54 +4,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0f766e">
-<title>ShopBill — Smart Billing for Small Shops</title>
+<title>ShopBill — Smart Billing for Indian Shops</title>
+
 <style>
-:root{--green:#0f766e;--dark:#12302d;--bg:#f4f7f6;--white:#fff;--muted:#71817e;--border:#e2e9e7;--red:#dc2626;--shadow:0 8px 24px #153d3510}
+:root{
+  --green:#0f766e;--dark:#12302d;--bg:#f4f7f6;--white:#fff;
+  --muted:#71817e;--border:#e2e9e7;--red:#dc2626;
+}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#172b28}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
+.hidden{display:none!important}
 .app{display:flex;min-height:100vh}
-.sidebar{width:245px;background:#fff;border-right:1px solid var(--border);padding:22px 15px;display:flex;flex-direction:column}
-.brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800;padding:0 10px 25px;color:var(--dark)}
-.logo{background:var(--green);color:white;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:900}
-.shop{padding:12px;background:#f3f8f6;border-radius:12px;margin-bottom:20px;font-size:13px}
+.sidebar{width:240px;background:#fff;border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800;padding:0 8px 22px;color:var(--dark)}
+.logo{background:var(--green);color:white;width:38px;height:38px;border-radius:12px;display:grid;place-items:center}
+.shop{padding:12px;background:#f3f8f6;border-radius:12px;margin-bottom:18px;font-size:13px}
 .shop small{display:block;color:var(--muted);margin-top:5px}
-.nav{display:grid;gap:6px}
+.nav{display:grid;gap:5px}
 .nav button{border:0;background:transparent;text-align:left;padding:12px;border-radius:9px;color:#53635f;font-weight:600}
 .nav button.active,.nav button:hover{background:#e6f4f1;color:var(--green)}
-.sidebar-bottom{margin-top:auto;padding:15px 8px 0;color:var(--muted);font-size:12px}
+.sidebar-bottom{margin-top:auto;padding:18px 8px 0;color:var(--muted);font-size:12px}
 .main{flex:1;min-width:0}
-.topbar{height:65px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px}
-.topbar small{color:var(--muted)}
-.content{max-width:1200px;margin:auto;padding:28px}
-.head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px}
+.topbar{height:62px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 25px}
+.content{max-width:1200px;margin:auto;padding:25px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:22px}
 .eyebrow{font-size:11px;letter-spacing:1.5px;color:var(--green);font-weight:800}
 h1{font-size:27px;margin:8px 0}
 .subtitle{color:var(--muted);margin:0}
 .btn{border:1px solid var(--border);background:white;padding:10px 14px;border-radius:9px;font-weight:700;color:#334}
 .btn.primary{background:var(--green);border-color:var(--green);color:white}
 .btn.danger{color:var(--red)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.card{background:white;border:1px solid var(--border);border-radius:14px;padding:19px;box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px}
 .metric-label{color:var(--muted);font-size:13px}
 .metric{font-size:25px;font-weight:800;margin:10px 0}
 .metric-note{font-size:12px;color:var(--green)}
-.section{margin-top:22px}
+.section{margin-top:20px}
 .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
 .section-title h2{font-size:17px;margin:0}
 .table-wrap{overflow:auto}
 table{width:100%;border-collapse:collapse;min-width:580px}
-th,td{text-align:left;padding:13px 10px;border-bottom:1px solid var(--border);font-size:13px}
-th{color:var(--muted);font-weight:700;background:#fbfcfc}
-.empty{text-align:center;padding:35px;color:var(--muted)}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--border);font-size:13px}
+th{color:var(--muted);background:#fbfcfc}
+.empty{text-align:center;padding:30px;color:var(--muted)}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .field{display:grid;gap:7px}
 .field label{font-size:12px;color:var(--muted);font-weight:700}
-.field input,.field select,.field textarea{width:100%;border:1px solid #d8e2df;border-radius:8px;padding:11px;background:#fff;color:#172b28}
+.field input,.field select,.field textarea{width:100%;border:1px solid #d8e2df;border-radius:8px;padding:11px;background:white;color:#172b28}
 .field textarea{min-height:70px;resize:vertical}
 .full{grid-column:1/-1}
-.items{margin-top:20px}
 .item-row{display:grid;grid-template-columns:2fr .7fr .8fr .7fr 35px;gap:8px;margin-bottom:9px}
 .item-row input{width:100%;min-width:0;border:1px solid var(--border);border-radius:7px;padding:10px}
 .totals{margin:18px 0 0 auto;max-width:330px}
@@ -59,20 +62,22 @@ th{color:var(--muted);font-weight:700;background:#fbfcfc}
 .total-line.grand{border-top:1px solid var(--border);font-size:20px;font-weight:800;color:var(--dark);padding-top:13px}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
 .badge{display:inline-block;padding:5px 8px;background:#e8f6ef;color:#087443;border-radius:20px;font-size:11px;font-weight:700}
-.badge.red{background:#fff0f0;color:#b91c1c}
 .notice{padding:12px 15px;background:#e7f7f1;border:1px solid #b8e6d5;color:#087443;border-radius:9px;margin-bottom:15px}
-.hidden{display:none!important}
-footer{padding:30px 0;color:var(--muted);font-size:12px;display:flex;justify-content:space-between}
-@media(max-width:900px){.sidebar{width:200px}.grid{grid-template-columns:repeat(2,1fr)}.content{padding:20px}}
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+.auth-card{width:min(430px,100%);background:white;padding:28px;border:1px solid var(--border);border-radius:18px}
+.auth-card h1{margin-top:0}
+footer{padding:25px 0;color:var(--muted);font-size:12px;display:flex;justify-content:space-between}
+@media(max-width:900px){.sidebar{width:200px}.grid{grid-template-columns:repeat(2,1fr)}.content{padding:18px}}
 @media(max-width:650px){
  .app{display:block}.sidebar{width:100%;padding:12px;border:0;border-bottom:1px solid var(--border)}
  .brand{padding:0 6px 10px}.shop,.sidebar-bottom{display:none}
  .nav{display:flex;overflow:auto;gap:4px}.nav button{white-space:nowrap;padding:10px;font-size:12px}
- .topbar{height:48px;padding:0 16px}.content{padding:16px}
+ .topbar{height:48px;padding:0 14px}.content{padding:14px}
  .head{align-items:flex-start;flex-direction:column}h1{font-size:23px}
- .grid{gap:10px}.card{padding:14px}.metric{font-size:21px}
+ .grid{gap:9px}.card{padding:13px}.metric{font-size:20px}
  .form-grid{grid-template-columns:1fr}.full{grid-column:auto}
- .item-row{grid-template-columns:1.5fr .6fr .7fr 30px}.item-row .rate{display:none}
+ .item-row{grid-template-columns:1.4fr .6fr .7fr 30px}
+ .item-row .rate{display:none}
  footer{gap:10px;flex-wrap:wrap}
 }
 @media print{
@@ -81,159 +86,872 @@ footer{padding:30px 0;color:var(--muted);font-size:12px;display:flex;justify-con
 }
 </style>
 </head>
+
 <body>
-<div class="app">
-<aside class="sidebar">
- <div class="brand"><span class="logo">S</span> ShopBill</div>
- <div class="shop"><b id="sideShop">Anand General Store</b><small>Billing workspace · Demo</small></div>
- <nav class="nav">
-  <button class="active" data-page="overview">▦ &nbsp; Overview</button>
-  <button data-page="invoice">＋ &nbsp; New invoice</button>
-  <button data-page="invoices">▤ &nbsp; Invoices</button>
-  <button data-page="products">□ &nbsp; Products</button>
-  <button data-page="customers">♙ &nbsp; Customers & ledger</button>
-  <button data-page="reports">▥ &nbsp; Reports</button>
-  <button data-page="settings">⚙ &nbsp; Shop settings</button>
-  <button data-page="plans">✦ &nbsp; Plans</button>
- </nav>
- <div class="sidebar-bottom">© 2026 ShopBill<br>Made for Indian small businesses</div>
-</aside>
-<main class="main">
- <header class="topbar"><b>Workspace / <span id="crumb">Overview</span></b><small id="today"></small></header>
- <div class="content">
-  <div class="head">
-   <div><div class="eyebrow">YOUR BUSINESS, SIMPLIFIED</div><h1 id="pageTitle">Good morning 👋</h1><p class="subtitle" id="pageSubtitle">Here’s what’s happening with your shop today.</p></div>
-   <button class="btn primary" onclick="showPage('invoice')">＋ Create invoice</button>
+
+<!-- LOGIN / REGISTRATION -->
+<div id="authScreen" class="auth-wrap">
+  <div class="auth-card">
+    <div class="brand"><span class="logo">S</span> ShopBill</div>
+    <h1 id="authTitle">Create your shop account</h1>
+    <p class="subtitle">Smart billing for Indian small businesses</p>
+
+    <form id="authForm" class="form-grid">
+      <div class="field full">
+        <label>Shop name</label>
+        <input id="authShop" required placeholder="Anand General Store">
+      </div>
+      <div class="field full">
+        <label>Your name</label>
+        <input id="authOwner" required placeholder="Owner name">
+      </div>
+      <div class="field full">
+        <label>Email</label>
+        <input id="authEmail" type="email" required placeholder="you@example.com">
+      </div>
+      <div class="field full">
+        <label>Password</label>
+        <input id="authPassword" type="password" minlength="6" required placeholder="Minimum 6 characters">
+      </div>
+      <div class="full">
+        <button class="btn primary" type="submit" id="authButton">Register shop</button>
+      </div>
+    </form>
+
+    <p style="font-size:12px;color:#71817e;margin-top:15px">
+      Demo authentication stores account data in this browser only.
+    </p>
   </div>
-  <div id="notice" class="notice hidden"></div>
-  <div id="view"></div>
-  <footer><span>© 2026 ShopBill</span><span>Smart billing for small shops in India</span></footer>
- </div>
-</main>
 </div>
+
+<!-- MAIN APP -->
+<div id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="brand"><span class="logo">S</span> ShopBill</div>
+    <div class="shop">
+      <b id="sideShop">My Shop</b>
+      <small>Billing workspace</small>
+    </div>
+
+    <nav class="nav">
+      <button class="active" data-page="overview">▦ Overview</button>
+      <button data-page="invoice">＋ New invoice</button>
+      <button data-page="invoices">▤ Invoices</button>
+      <button data-page="products">□ Products & stock</button>
+      <button data-page="customers">♙ Customers & ledger</button>
+      <button data-page="reports">▥ Sales reports</button>
+      <button data-page="settings">⚙ Shop settings</button>
+      <button data-page="plans">✦ Subscription plans</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      © 2026 ShopBill<br>
+      Made for Indian small businesses
+      <br><br>
+      <button class="btn" onclick="logout()">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <b>Workspace / <span id="crumb">Overview</span></b>
+      <small id="today"></small>
+    </header>
+
+    <div class="content">
+      <div class="head">
+        <div>
+          <div class="eyebrow">YOUR BUSINESS, SIMPLIFIED</div>
+          <h1 id="pageTitle">Good morning 👋</h1>
+          <p class="subtitle" id="pageSubtitle">Here’s what’s happening with your shop today.</p>
+        </div>
+        <button class="btn primary" onclick="showPage('invoice')">＋ Create invoice</button>
+      </div>
+
+      <div id="notice" class="notice hidden"></div>
+      <div id="view"></div>
+
+      <footer>
+        <span>© 2026 ShopBill</span>
+        <span>Smart billing for small shops in India</span>
+      </footer>
+    </div>
+  </main>
+</div>
+
 <script>
-const $=id=>document.getElementById(id);
-const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-const today=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
-$('today').textContent=today;
-let data=JSON.parse(localStorage.getItem('shopbill_data')||'null')||{
- shop:{name:'Anand General Store',owner:'Anand',phone:'',address:'Saharsa, Bihar',gstin:''},
- products:[{id:1,name:'Notebook',price:50,gst:12,stock:100},{id:2,name:'Pen',price:10,gst:5,stock:200}],
- customers:[{id:1,name:'Walk-in Customer',phone:'',balance:0}],
- invoices:[],payments:[]
+/* ------------------ CORE HELPERS ------------------ */
+const $ = id => document.getElementById(id);
+const money = n => "₹" + Number(n || 0).toLocaleString("en-IN", {
+  minimumFractionDigits:2, maximumFractionDigits:2
+});
+const dateToday = () => new Date().toLocaleDateString("en-IN", {
+  day:"2-digit",month:"short",year:"numeric"
+});
+$("today").textContent = dateToday();
+
+function escapeHTML(s){
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function notice(msg){
+  $("notice").textContent = msg;
+  $("notice").classList.remove("hidden");
+  setTimeout(()=>$("notice").classList.add("hidden"),3000);
+}
+function getUsers(){
+  return JSON.parse(localStorage.getItem("shopbill_users") || "[]");
+}
+function setUsers(users){
+  localStorage.setItem("shopbill_users",JSON.stringify(users));
+}
+function getSession(){
+  return JSON.parse(localStorage.getItem("shopbill_session") || "null");
+}
+function setSession(session){
+  localStorage.setItem("shopbill_session",JSON.stringify(session));
+}
+function storageKey(){
+  const session = getSession();
+  return session ? "shopbill_data_" + session.email : "shopbill_data";
+}
+
+/* ------------------ AUTH ------------------ */
+let authMode = "register";
+
+function setAuthMode(mode){
+  authMode = mode;
+  $("authTitle").textContent = mode === "register" ? "Create your shop account" : "Login to ShopBill";
+  $("authButton").textContent = mode === "register" ? "Register shop" : "Login";
+  $("authShop").parentElement.classList.toggle("hidden",mode === "login");
+  $("authOwner").parentElement.classList.toggle("hidden",mode === "login");
+
+  let toggle = $("authToggle");
+  if(!toggle){
+    toggle = document.createElement("p");
+    toggle.id = "authToggle";
+    toggle.style.cssText = "font-size:13px;margin-top:18px";
+    $("authForm").after(toggle);
+  }
+  toggle.innerHTML = mode === "register"
+    ? 'Already registered? <a href="#" onclick="setAuthMode(\'login\');return false">Login</a>'
+    : 'New to ShopBill? <a href="#" onclick="setAuthMode(\'register\');return false">Register</a>';
+}
+
+$("authForm").addEventListener("submit",e=>{
+  e.preventDefault();
+
+  const email = $("authEmail").value.trim().toLowerCase();
+  const password = $("authPassword").value;
+  const users = getUsers();
+
+  if(authMode === "register"){
+    if(users.some(u=>u.email===email)){
+      alert("This email is already registered. Please login.");
+      setAuthMode("login");
+      return;
+    }
+
+    const user = {
+      email,
+      password,
+      shop:{
+        name:$("authShop").value.trim(),
+        owner:$("authOwner").value.trim(),
+        phone:"",
+        address:"",
+        gstin:""
+      }
+    };
+
+    users.push(user);
+    setUsers(users);
+    setSession({email});
+    initializeShop();
+    showApp();
+    notice("Shop registered successfully!");
+  }else{
+    const user = users.find(u=>u.email===email && u.password===password);
+    if(!user){
+      alert("Incorrect email or password.");
+      return;
+    }
+    setSession({email});
+    initializeShop();
+    showApp();
+  }
+});
+
+function logout(){
+  localStorage.removeItem("shopbill_session");
+  $("app").classList.add("hidden");
+  $("authScreen").classList.remove("hidden");
+  setAuthMode("login");
+}
+
+/* ------------------ SHOP DATA ------------------ */
+let data;
+let currentItems = [];
+
+function initializeShop(){
+  const session = getSession();
+  const users = getUsers();
+  const user = users.find(u=>u.email===session?.email);
+
+  if(!user)return;
+
+  data = JSON.parse(localStorage.getItem(storageKey()) || "null") || {
+    shop:user.shop,
+    products:[
+      {id:1,name:"Notebook",price:50,gst:12,stock:100},
+      {id:2,name:"Pen",price:10,gst:5,stock:200}
+    ],
+    customers:[
+      {id:1,name:"Walk-in Customer",phone:"",balance:0}
+    ],
+    invoices:[],
+    payments:[]
+  };
+
+  data.shop = data.shop || user.shop;
+  saveData();
+}
+
+function saveData(){
+  localStorage.setItem(storageKey(),JSON.stringify(data));
+}
+
+function showApp(){
+  $("authScreen").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  $("sideShop").textContent = data.shop.name;
+  showPage("overview");
+}
+
+/* ------------------ NAVIGATION ------------------ */
+const pageNames = {
+  overview:"Overview",
+  invoice:"New invoice",
+  invoices:"Invoices",
+  products:"Products & stock",
+  customers:"Customers & ledger",
+  reports:"Sales reports",
+  settings:"Shop settings",
+  plans:"Subscription plans"
 };
-function save(){localStorage.setItem('shopbill_data',JSON.stringify(data))}
-function escapeHTML(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function notice(msg){$('notice').textContent=msg;$('notice').classList.remove('hidden');setTimeout(()=>$('notice').classList.add('hidden'),2800)}
+
 function showPage(page){
- document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
- const names={overview:'Overview',invoice:'New invoice',invoices:'Invoices',products:'Products',customers:'Customers & ledger',reports:'Reports',settings:'Shop settings',plans:'Plans'};
- $('crumb').textContent=names[page];$('pageTitle').textContent=page==='overview'?'Good morning, '+data.shop.owner+' 👋':names[page];$('pageSubtitle').textContent=page==='overview'?'Here’s what’s happening with your shop today.':'Manage your '+names[page].toLowerCase()+'.';
- const pages={overview:overviewPage,invoice:invoicePage,invoices:invoicesPage,products:productsPage,customers:customersPage,reports:reportsPage,settings:settingsPage,plans:plansPage};
- $('view').innerHTML=pages[page]();if(page==='invoice')refreshInvoice();if(page==='products')bindProductForm();if(page==='customers')bindCustomerForm();if(page==='settings')bindSettings();
+  document.querySelectorAll("[data-page]").forEach(b=>{
+    b.classList.toggle("active",b.dataset.page===page);
+  });
+
+  $("crumb").textContent = pageNames[page];
+  $("pageTitle").textContent = page==="overview"
+    ? "Good morning, " + data.shop.owner + " 👋"
+    : pageNames[page];
+
+  $("pageSubtitle").textContent = page==="overview"
+    ? "Here’s what’s happening with your shop today."
+    : "Manage your " + pageNames[page].toLowerCase() + ".";
+
+  const pages = {
+    overview:overviewPage,
+    invoice:invoicePage,
+    invoices:invoicesPage,
+    products:productsPage,
+    customers:customersPage,
+    reports:reportsPage,
+    settings:settingsPage,
+    plans:plansPage
+  };
+
+  $("view").innerHTML = pages[page]();
+
+  if(page==="invoice")refreshInvoice();
+  if(page==="products")bindProductForm();
+  if(page==="customers")bindCustomerForm();
+  if(page==="settings")bindSettings();
 }
-document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+
+document.querySelectorAll("[data-page]").forEach(b=>{
+  b.addEventListener("click",()=>showPage(b.dataset.page));
+});
+
+/* ------------------ OVERVIEW ------------------ */
 function overviewPage(){
- const sales=data.invoices.reduce((s,i)=>s+i.total,0),due=data.invoices.reduce((s,i)=>s+i.due,0);
- return `<div class="grid">
- <div class="card"><div class="metric-label">Total sales</div><div class="metric">${money(sales)}</div><div class="metric-note">All recorded invoices</div></div>
- <div class="card"><div class="metric-label">Invoices</div><div class="metric">${data.invoices.length}</div><div class="metric-note">Created in this browser</div></div>
- <div class="card"><div class="metric-label">Outstanding</div><div class="metric">${money(due)}</div><div class="metric-note">Customer balances</div></div>
- <div class="card"><div class="metric-label">Products</div><div class="metric">${data.products.length}</div><div class="metric-note">In your catalog</div></div></div>
- <div class="section card"><div class="section-title"><h2>Recent invoices</h2><button class="btn" onclick="showPage('invoices')">View all →</button></div>${invoiceTable(data.invoices.slice(-5).reverse())}</div>`;
+  const sales = data.invoices.reduce((s,i)=>s+i.total,0);
+  const due = data.invoices.reduce((s,i)=>s+i.due,0);
+
+  return `
+  <div class="grid">
+    <div class="card">
+      <div class="metric-label">Total sales</div>
+      <div class="metric">${money(sales)}</div>
+      <div class="metric-note">All recorded invoices</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">Invoices</div>
+      <div class="metric">${data.invoices.length}</div>
+      <div class="metric-note">Created in this account</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">Outstanding</div>
+      <div class="metric">${money(due)}</div>
+      <div class="metric-note">Customer balances</div>
+    </div>
+    <div class="card">
+      <div class="metric-label">Products</div>
+      <div class="metric">${data.products.length}</div>
+      <div class="metric-note">In your catalog</div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="section-title">
+      <h2>Recent invoices</h2>
+      <button class="btn" onclick="showPage('invoices')">View all →</button>
+    </div>
+    ${invoiceTable(data.invoices.slice(-5).reverse())}
+  </div>`;
 }
+
+/* ------------------ INVOICE TABLE ------------------ */
 function invoiceTable(list){
- if(!list.length)return '<div class="empty">No invoices yet. Create your first invoice.</div>';
- return `<div class="table-wrap"><table><thead><tr><th>Invoice</th><th>Customer</th><th>Date</th><th>Total</th><th>Due</th><th></th></tr></thead><tbody>${list.map(i=>`<tr><td><b>${escapeHTML(i.number)}</b></td><td>${escapeHTML(i.customer)}</td><td>${escapeHTML(i.date)}</td><td>${money(i.total)}</td><td>${money(i.due)}</td><td><button class="btn" onclick="printInvoice('${i.id}')">Print</button></td></tr>`).join('')}</tbody></table></div>`;
+  if(!list.length)return '<div class="empty">No invoices yet. Create your first invoice.</div>';
+
+  return `
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Invoice</th><th>Customer</th><th>Date</th>
+          <th>Total</th><th>Due</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${list.map(i=>`
+          <tr>
+            <td><b>${escapeHTML(i.number)}</b></td>
+            <td>${escapeHTML(i.customer)}</td>
+            <td>${escapeHTML(i.date)}</td>
+            <td>${money(i.total)}</td>
+            <td>${money(i.due)}</td>
+            <td><button class="btn" onclick="printInvoice('${i.id}')">PDF / Print</button></td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+  </div>`;
 }
-let currentItems=[];
+
+/* ------------------ CREATE INVOICE ------------------ */
 function invoicePage(){
- currentItems=[{name:'',qty:1,price:0,gst:0}];
- return `<div class="card">
- <div class="form-grid">
- <div class="field"><label>Customer</label><select id="invCustomer">${data.customers.map(c=>`<option>${escapeHTML(c.name)}</option>`).join('')}<option>＋ New customer</option></select></div>
- <div class="field"><label>Invoice date</label><input id="invDate" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
- </div>
- <div class="items"><div class="section-title"><h2>Items</h2><button class="btn" onclick="addItem()">＋ Add item</button></div>
- <div id="itemRows"></div></div>
- <div class="totals">
- <div class="total-line"><span>Subtotal</span><b id="subtotal">₹0.00</b></div>
- <div class="total-line"><span>GST</span><b id="tax">₹0.00</b></div>
- <div class="total-line grand"><span>Total</span><b id="grand">₹0.00</b></div>
- <div class="field" style="margin-top:12px"><label>Amount paid (₹)</label><input id="paid" type="number" min="0" value="0" oninput="refreshInvoice()"></div>
- <div class="total-line"><span>Balance due</span><b id="due">₹0.00</b></div>
- </div>
- <div class="actions"><button class="btn primary" onclick="saveInvoice()">Save invoice</button><button class="btn" onclick="showPage('overview')">Cancel</button></div>
- </div>`;
+  currentItems = [{name:"",qty:1,price:0,gst:0}];
+
+  return `
+  <div class="card">
+    <div class="form-grid">
+      <div class="field">
+        <label>Customer</label>
+        <select id="invCustomer">
+          ${data.customers.map(c=>`
+            <option value="${escapeHTML(c.name)}">${escapeHTML(c.name)}</option>
+          `).join("")}
+          <option value="__new">＋ New customer</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Invoice date</label>
+        <input id="invDate" type="date" value="${new Date().toISOString().slice(0,10)}">
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">
+        <h2>Invoice items</h2>
+        <button class="btn" onclick="addItem()">＋ Add item</button>
+      </div>
+      <div id="itemRows"></div>
+    </div>
+
+    <div class="totals">
+      <div class="total-line"><span>Subtotal</span><b id="subtotal">₹0.00</b></div>
+      <div class="total-line"><span>GST</span><b id="tax">₹0.00</b></div>
+      <div class="total-line grand"><span>Total</span><b id="grand">₹0.00</b></div>
+
+      <div class="field" style="margin-top:12px">
+        <label>Amount paid (₹)</label>
+        <input id="paid" type="number" min="0" value="0" oninput="refreshInvoice()">
+      </div>
+
+      <div class="total-line"><span>Balance due</span><b id="due">₹0.00</b></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" onclick="saveInvoice()">Save invoice</button>
+      <button class="btn" onclick="showPage('overview')">Cancel</button>
+    </div>
+  </div>`;
 }
-function addItem(){currentItems.push({name:'',qty:1,price:0,gst:0});renderItems()}
+
+function addItem(){
+  currentItems.push({name:"",qty:1,price:0,gst:0});
+  renderItems();
+}
+
 function renderItems(){
- $('itemRows').innerHTML=currentItems.map((it,i)=>`<div class="item-row">
- <input placeholder="Item name" value="${escapeHTML(it.name)}" oninput="currentItems[${i}].name=this.value">
- <input type="number" min="1" value="${it.qty}" title="Quantity" oninput="currentItems[${i}].qty=+this.value||0;refreshInvoice()">
- <input type="number" min="0" value="${it.price}" title="Price" oninput="currentItems[${i}].price=+this.value||0;refreshInvoice()">
- <input class="rate" type="number" min="0" max="100" value="${it.gst}" title="GST %" oninput="currentItems[${i}].gst=+this.value||0;refreshInvoice()">
- <button class="btn danger" onclick="currentItems.splice(${i},1);renderItems()">×</button>
- </div>`).join('');
+  $("itemRows").innerHTML = currentItems.map((it,i)=>`
+    <div class="item-row">
+      <input list="productOptions" placeholder="Item name"
+        value="${escapeHTML(it.name)}"
+        oninput="setItemName(${i},this.value)">
+      <input type="number" min="1" value="${it.qty}" title="Quantity"
+        oninput="currentItems[${i}].qty=+this.value||0;refreshInvoice()">
+      <input type="number" min="0" value="${it.price}" title="Price"
+        oninput="currentItems[${i}].price=+this.value||0;refreshInvoice()">
+      <input class="rate" type="number" min="0" max="100" value="${it.gst}" title="GST %"
+        oninput="currentItems[${i}].gst=+this.value||0;refreshInvoice()">
+      <button class="btn danger" onclick="removeItem(${i})">×</button>
+    </div>
+  `).join("") + `
+    <datalist id="productOptions">
+      ${data.products.map(p=>`<option value="${escapeHTML(p.name)}">`).join("")}
+    </datalist>`;
 }
+
+function setItemName(index,value){
+  currentItems[index].name = value;
+  const p = data.products.find(p=>p.name.toLowerCase()===value.toLowerCase());
+  if(p){
+    currentItems[index].price = Number(p.price);
+    currentItems[index].gst = Number(p.gst);
+    renderItems();
+    refreshInvoice();
+  }
+}
+
+function removeItem(index){
+  currentItems.splice(index,1);
+  if(!currentItems.length)currentItems.push({name:"",qty:1,price:0,gst:0});
+  renderItems();
+  refreshInvoice();
+}
+
 function refreshInvoice(){
- if(!$('itemRows'))return;renderItems();
- let subtotal=currentItems.reduce((s,i)=>s+i.qty*i.price,0),tax=currentItems.reduce((s,i)=>s+i.qty*i.price*i.gst/100,0),total=subtotal+tax,paid=+$('paid').value||0;
- $('subtotal').textContent=money(subtotal);$('tax').textContent=money(tax);$('grand').textContent=money(total);$('due').textContent=money(Math.max(0,total-paid));
+  if(!$("itemRows"))return;
+
+  renderItems();
+
+  const subtotal = currentItems.reduce((s,i)=>s+i.qty*i.price,0);
+  const tax = currentItems.reduce((s,i)=>s+i.qty*i.price*i.gst/100,0);
+  const total = subtotal+tax;
+  const paid = +$("paid").value||0;
+
+  $("subtotal").textContent = money(subtotal);
+  $("tax").textContent = money(tax);
+  $("grand").textContent = money(total);
+  $("due").textContent = money(Math.max(0,total-paid));
 }
+
 function saveInvoice(){
- const customer=$('invCustomer').value==='＋ New customer'?prompt('Customer name?'):$('invCustomer').value;
- if(!customer)return;
- const items=currentItems.filter(i=>i.name.trim()&&i.qty>0);
- if(!items.length){notice('Please add at least one item.');return}
- const subtotal=items.reduce((s,i)=>s+i.qty*i.price,0),tax=items.reduce((s,i)=>s+i.qty*i.price*i.gst/100,0),total=subtotal+tax,paid=Math.min(total,+$('paid').value||0);
- const id=Date.now(),number='SB-'+String(data.invoices.length+1).padStart(4,'0');
- data.invoices.push({id,number,customer,date:$('invDate').value,items,subtotal,tax,total,paid,due:total-paid});
- let c=data.customers.find(x=>x.name===customer);if(!c){c={id:Date.now(),name:customer,phone:'',balance:0};data.customers.push(c)}
- c.balance=(c.balance||0)+(total-paid);save();notice('Invoice saved successfully!');showPage('invoices');
+  let customer = $("invCustomer").value;
+
+  if(customer==="__new"){
+    customer = prompt("New customer name?");
+    if(!customer)return;
+    customer = customer.trim();
+  }
+
+  const items = currentItems.filter(i=>i.name.trim() && i.qty>0);
+
+  if(!items.length){
+    notice("Please add at least one item.");
+    return;
+  }
+
+  const subtotal = items.reduce((s,i)=>s+i.qty*i.price,0);
+  const tax = items.reduce((s,i)=>s+i.qty*i.price*i.gst/100,0);
+  const total = subtotal+tax;
+  const paid = Math.min(total,Math.max(0,+$("paid").value||0));
+
+  // Reduce stock for matching products
+  items.forEach(item=>{
+    const product = data.products.find(p=>p.name.toLowerCase()===item.name.toLowerCase());
+    if(product)product.stock = Math.max(0,product.stock-item.qty);
+  });
+
+  const id = Date.now();
+  const number = "SB-" + String(data.invoices.length+1).padStart(4,"0");
+
+  data.invoices.push({
+    id,number,customer,
+    date:$("invDate").value,
+    items:JSON.parse(JSON.stringify(items)),
+    subtotal,tax,total,paid,due:total-paid
+  });
+
+  let c = data.customers.find(x=>x.name.toLowerCase()===customer.toLowerCase());
+
+  if(!c){
+    c={id:Date.now(),name:customer,phone:"",balance:0};
+    data.customers.push(c);
+  }
+
+  c.balance = (c.balance||0)+(total-paid);
+
+  if(paid>0){
+    data.payments.push({customer,amount:paid,date:dateToday(),invoice:number});
+  }
+
+  saveData();
+  notice("Invoice saved successfully!");
+  showPage("invoices");
 }
-function invoicesPage(){return `<div class="card">${invoiceTable([...data.invoices].reverse())}</div>`}
+
+function invoicesPage(){
+  return `<div class="card">${invoiceTable([...data.invoices].reverse())}</div>`;
+}
+
+/* ------------------ PRODUCTS & STOCK ------------------ */
 function productsPage(){
- return `<div class="card"><div class="section-title"><h2>Product catalog</h2></div>
- <form id="productForm" class="form-grid">
- <div class="field"><label>Product name</label><input name="name" required placeholder="e.g. Rice 1kg"></div>
- <div class="field"><label>Price (₹)</label><input name="price" type="number" min="0" required></div>
- <div class="field"><label>GST %</label><select name="gst"><option>0</option><option>5</option><option>12</option><option>18</option><option>28</option></select></div>
- <div class="field"><label>Stock quantity</label><input name="stock" type="number" min="0" value="0"></div>
- <div class="full"><button class="btn primary">＋ Add product</button></div></form>
- <div class="section table-wrap"><table><thead><tr><th>Product</th><th>Price</th><th>GST</th><th>Stock</th><th></th></tr></thead><tbody>${data.products.map(p=>`<tr><td>${escapeHTML(p.name)}</td><td>${money(p.price)}</td><td>${p.gst}%</td><td>${p.stock}</td><td><button class="btn danger" onclick="deleteProduct(${p.id})">Delete</button></td></tr>`).join('')}</tbody></table></div></div>`;
+  return `
+  <div class="card">
+    <div class="section-title"><h2>Add product</h2></div>
+
+    <form id="productForm" class="form-grid">
+      <div class="field">
+        <label>Product name</label>
+        <input name="name" required placeholder="e.g. Rice 1kg">
+      </div>
+      <div class="field">
+        <label>Price (₹)</label>
+        <input name="price" type="number" min="0" required>
+      </div>
+      <div class="field">
+        <label>GST %</label>
+        <select name="gst">
+          <option>0</option><option>5</option><option>12</option>
+          <option>18</option><option>28</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Stock quantity</label>
+        <input name="stock" type="number" min="0" value="0">
+      </div>
+      <div class="full"><button class="btn primary">＋ Add product</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="section-title"><h2>Product catalog</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Product</th><th>Price</th><th>GST</th><th>Stock</th><th>Action</th></tr></thead>
+        <tbody>
+          ${data.products.map(p=>`
+            <tr>
+              <td>${escapeHTML(p.name)}</td>
+              <td>${money(p.price)}</td>
+              <td>${p.gst}%</td>
+              <td>${p.stock}</td>
+              <td><button class="btn danger" onclick="deleteProduct(${p.id})">Delete</button></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
 }
-function bindProductForm(){const f=$('productForm');f.onsubmit=e=>{e.preventDefault();const x=Object.fromEntries(new FormData(f));data.products.push({id:Date.now(),name:x.name,price:+x.price,gst:+x.gst,stock:+x.stock});save();showPage('products');notice('Product added')}}
-function deleteProduct(id){data.products=data.products.filter(p=>p.id!==id);save();showPage('products')}
+
+function bindProductForm(){
+  $("productForm").onsubmit=e=>{
+    e.preventDefault();
+    const x=Object.fromEntries(new FormData(e.target));
+
+    data.products.push({
+      id:Date.now(),
+      name:x.name.trim(),
+      price:+x.price,
+      gst:+x.gst,
+      stock:+x.stock
+    });
+
+    saveData();
+    showPage("products");
+    notice("Product added");
+  };
+}
+
+function deleteProduct(id){
+  if(!confirm("Delete this product?"))return;
+  data.products=data.products.filter(p=>p.id!==id);
+  saveData();
+  showPage("products");
+}
+
+/* ------------------ CUSTOMERS & LEDGER ------------------ */
 function customersPage(){
- return `<div class="card"><h2>Add customer</h2><form id="customerForm" class="form-grid">
- <div class="field"><label>Name</label><input name="name" required></div><div class="field"><label>Phone</label><input name="phone" type="tel"></div>
- <div class="full"><button class="btn primary">Add customer</button></div></form>
- <div class="section table-wrap"><table><thead><tr><th>Customer</th><th>Phone</th><th>Outstanding</th><th></th></tr></thead><tbody>${data.customers.map(c=>`<tr><td>${escapeHTML(c.name)}</td><td>${escapeHTML(c.phone)}</td><td>${money(c.balance)}</td><td><button class="btn" onclick="recordPayment(${c.id})">Record payment</button></td></tr>`).join('')}</tbody></table></div></div>`;
+  return `
+  <div class="card">
+    <h2>Add customer</h2>
+    <form id="customerForm" class="form-grid">
+      <div class="field"><label>Name</label><input name="name" required></div>
+      <div class="field"><label>Phone</label><input name="phone" type="tel"></div>
+      <div class="full"><button class="btn primary">Add customer</button></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Customer ledger</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Customer</th><th>Phone</th><th>Outstanding</th><th>Action</th></tr></thead>
+        <tbody>
+          ${data.customers.map(c=>`
+            <tr>
+              <td>${escapeHTML(c.name)}</td>
+              <td>${escapeHTML(c.phone)}</td>
+              <td>${money(c.balance)}</td>
+              <td><button class="btn" onclick="recordPayment(${c.id})">Record payment</button></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
 }
-function bindCustomerForm(){ $('customerForm').onsubmit=e=>{e.preventDefault();const x=Object.fromEntries(new FormData(e.target));data.customers.push({id:Date.now(),name:x.name,phone:x.phone,balance:0});save();showPage('customers');notice('Customer added')}}
-function recordPayment(id){const c=data.customers.find(c=>c.id===id);const amount=+prompt('Payment amount in ₹');if(amount>0){c.balance=Math.max(0,(c.balance||0)-amount);data.payments.push({customer:c.name,amount,date:today});save();showPage('customers');notice('Payment recorded')}}
-function reportsPage(){const sales=data.invoices.reduce((s,i)=>s+i.total,0),tax=data.invoices.reduce((s,i)=>s+i.tax,0);return `<div class="grid"><div class="card"><div class="metric-label">Gross sales</div><div class="metric">${money(sales)}</div></div><div class="card"><div class="metric-label">GST collected (recorded)</div><div class="metric">${money(tax)}</div></div><div class="card"><div class="metric-label">Invoices</div><div class="metric">${data.invoices.length}</div></div><div class="card"><div class="metric-label">Payments recorded</div><div class="metric">${money(data.payments.reduce((s,p)=>s+p.amount,0))}</div></div></div><div class="section card"><button class="btn primary" onclick="exportData()">Export backup (JSON)</button></div>`}
-function settingsPage(){return `<div class="card"><form id="settingsForm" class="form-grid">
- <div class="field"><label>Shop name</label><input name="name" value="${escapeHTML(data.shop.name)}" required></div>
- <div class="field"><label>Owner name</label><input name="owner" value="${escapeHTML(data.shop.owner)}"></div>
- <div class="field"><label>Phone</label><input name="phone" value="${escapeHTML(data.shop.phone)}"></div>
- <div class="field"><label>GSTIN</label><input name="gstin" value="${escapeHTML(data.shop.gstin)}"></div>
- <div class="field full"><label>Address</label><textarea name="address">${escapeHTML(data.shop.address)}</textarea></div>
- <div class="full"><button class="btn primary">Save shop profile</button></div></form></div>`}
-function bindSettings(){ $('settingsForm').onsubmit=e=>{e.preventDefault();data.shop=Object.fromEntries(new FormData(e.target));save();$('sideShop').textContent=data.shop.name;showPage('settings');notice('Shop profile saved')}}
-function plansPage(){return `<div class="grid">
- <div class="card"><span class="badge">FREE</span><h2>Starter</h2><div class="metric">₹0 <small>/month</small></div><p>Basic billing and product catalog.</p><button class="btn" onclick="notice('You are using the demo plan')">Current demo plan</button></div>
- <div class="card"><span class="badge">POPULAR</span><h2>Pro</h2><div class="metric">₹299 <small>/month</small></div><p>Unlimited invoices, inventory and reports.</p><button class="btn primary" onclick="notice('Payment gateway is not connected in this demo')">Select Pro</button></div>
- <div class="card"><span class="badge">BUSINESS</span><h2>Business</h2><div class="metric">₹799 <small>/month</small></div><p>Multi-user workflow and advanced insights.</p><button class="btn" onclick="notice('Payment gateway is not connected in this demo')">Select Business</button></div></div>`}
+
+function bindCustomerForm(){
+  $("customerForm").onsubmit=e=>{
+    e.preventDefault();
+    const x=Object.fromEntries(new FormData(e.target));
+
+    data.customers.push({
+      id:Date.now(),
+      name:x.name.trim(),
+      phone:x.phone,
+      balance:0
+    });
+
+    saveData();
+    showPage("customers");
+    notice("Customer added");
+  };
+}
+
+function recordPayment(id){
+  const c=data.customers.find(c=>c.id===id);
+  if(!c)return;
+
+  const amount=Number(prompt("Payment amount in ₹")||0);
+  if(amount<=0)return;
+
+  c.balance=Math.max(0,(c.balance||0)-amount);
+  data.payments.push({customer:c.name,amount,date:dateToday()});
+
+  saveData();
+  showPage("customers");
+  notice("Payment recorded");
+}
+
+/* ------------------ REPORTS ------------------ */
+function reportsPage(){
+  const sales=data.invoices.reduce((s,i)=>s+i.total,0);
+  const tax=data.invoices.reduce((s,i)=>s+i.tax,0);
+  const paid=data.payments.reduce((s,p)=>s+p.amount,0);
+  const due=data.invoices.reduce((s,i)=>s+i.due,0);
+
+  return `
+  <div class="grid">
+    <div class="card"><div class="metric-label">Gross sales</div><div class="metric">${money(sales)}</div></div>
+    <div class="card"><div class="metric-label">GST recorded</div><div class="metric">${money(tax)}</div></div>
+    <div class="card"><div class="metric-label">Payments received</div><div class="metric">${money(paid)}</div></div>
+    <div class="card"><div class="metric-label">Outstanding</div><div class="metric">${money(due)}</div></div>
+  </div>
+
+  <div class="card section">
+    <div class="section-title"><h2>Payment history</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Customer</th><th>Date</th><th>Invoice</th><th>Amount</th></tr></thead>
+        <tbody>
+          ${data.payments.length ? data.payments.slice().reverse().map(p=>`
+            <tr>
+              <td>${escapeHTML(p.customer)}</td>
+              <td>${escapeHTML(p.date)}</td>
+              <td>${escapeHTML(p.invoice||"—")}</td>
+              <td>${money(p.amount)}</td>
+            </tr>
+          `).join("") : `<tr><td colspan="4" class="empty">No payments recorded yet.</td></tr>`}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <button class="btn primary" onclick="exportData()">Export backup (JSON)</button>
+  </div>`;
+}
+
+/* ------------------ SHOP SETTINGS ------------------ */
+function settingsPage(){
+  return `
+  <div class="card">
+    <form id="settingsForm" class="form-grid">
+      <div class="field"><label>Shop name</label><input name="name" value="${escapeHTML(data.shop.name)}" required></div>
+      <div class="field"><label>Owner name</label><input name="owner" value="${escapeHTML(data.shop.owner)}"></div>
+      <div class="field"><label>Phone</label><input name="phone" value="${escapeHTML(data.shop.phone)}"></div>
+      <div class="field"><label>GSTIN</label><input name="gstin" value="${escapeHTML(data.shop.gstin)}"></div>
+      <div class="field full"><label>Address</label><textarea name="address">${escapeHTML(data.shop.address)}</textarea></div>
+      <div class="full"><button class="btn primary">Save shop profile</button></div>
+    </form>
+  </div>`;
+}
+
+function bindSettings(){
+  $("settingsForm").onsubmit=e=>{
+    e.preventDefault();
+    data.shop=Object.fromEntries(new FormData(e.target));
+
+    // Update registered user's shop profile
+    const users=getUsers();
+    const session=getSession();
+    const user=users.find(u=>u.email===session?.email);
+    if(user){
+      user.shop=data.shop;
+      setUsers(users);
+    }
+
+    saveData();
+    $("sideShop").textContent=data.shop.name;
+    showPage("settings");
+    notice("Shop profile saved");
+  };
+}
+
+/* ------------------ SUBSCRIPTION PLANS ------------------ */
+function plansPage(){
+  return `
+  <div class="grid">
+    <div class="card">
+      <span class="badge">FREE</span>
+      <h2>Starter</h2>
+      <div class="metric">₹0 <small>/month</small></div>
+      <p>Basic billing and product catalog.</p>
+      <button class="btn" onclick="notice('You are using the demo plan')">Current demo plan</button>
+    </div>
+
+    <div class="card">
+      <span class="badge">POPULAR</span>
+      <h2>Pro</h2>
+      <div class="metric">₹299 <small>/month</small></div>
+      <p>Unlimited invoices, inventory and reports.</p>
+      <button class="btn primary" onclick="selectPlan('Pro')">Select Pro</button>
+    </div>
+
+    <div class="card">
+      <span class="badge">BUSINESS</span>
+      <h2>Business</h2>
+      <div class="metric">₹799 <small>/month</small></div>
+      <p>Multi-user workflow and advanced insights.</p>
+      <button class="btn primary" onclick="selectPlan('Business')">Select Business</button>
+    </div>
+  </div>`;
+}
+
+function selectPlan(plan){
+  alert(plan+" plan selected in demo. Online payment gateway is not connected yet.");
+}
+
+/* ------------------ PDF / PRINT INVOICE ------------------ */
 function printInvoice(id){
- const i=data.invoices.find(x=>x.id==id);if(!i)return;
- const w=window.open('','_blank');if(!w){notice('Allow pop-ups to print invoice');return}
- w.document.write(`<html><head><title>${i.number}</title><style>body{font:14px Arial;padding:30px;color:#222}h1{color:#0f766e}table{width:100%;border-collapse:collapse;margin-top:25px}td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}.right{text-align:right}</style></head><body><h1>${escapeHTML(data.shop.name)}</h1><p>${escapeHTML(data.shop.address)}<br>GSTIN: ${escapeHTML(data.shop.gstin||'—')}</p><hr><h2>Invoice ${i.number}</h2><p>Customer: ${escapeHTML(i.customer)}<br>Date: ${escapeHTML(i.date)}</p><table><tr><th>Item</th><th>Qty</th><th>Price</th><th>GST</th><th>Total</th></tr>${i.items.map(x=>`<tr><td>${escapeHTML(x.name)}</td><td>${x.qty}</td><td>${money(x.price)}</td><td>${x.gst}%</td><td>${money(x.qty*x.price*(1+x.gst/100))}</td></tr>`).join('')}</table><h3 class="right">Subtotal: ${money(i.subtotal)}</h3><h3 class="right">GST: ${money(i.tax)}</h3><h2 class="right">Total: ${money(i.total)}</h2><p>Paid: ${money(i.paid)} | Due: ${money(i.due)}</p><script>window.onload=()=>window.print()<\/script></body></html>`);
- w.document.close();
+  const i=data.invoices.find(x=>x.id==id);
+  if(!i)return;
+
+  const w=window.open("","_blank");
+  if(!w){
+    notice("Allow pop-ups to print invoice.");
+    return;
+  }
+
+  w.document.write(`
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>${escapeHTML(i.number)}</title>
+    <style>
+      body{font:14px Arial;padding:30px;color:#222}
+      h1{color:#0f766e}
+      table{width:100%;border-collapse:collapse;margin-top:25px}
+      td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}
+      .right{text-align:right}
+      .total{font-size:22px;font-weight:bold}
+    </style>
+  </head>
+  <body>
+    <h1>${escapeHTML(data.shop.name)}</h1>
+    <p>
+      ${escapeHTML(data.shop.address)}<br>
+      Phone: ${escapeHTML(data.shop.phone||"—")}<br>
+      GSTIN: ${escapeHTML(data.shop.gstin||"—")}
+    </p>
+
+    <hr>
+    <h2>TAX INVOICE — ${escapeHTML(i.number)}</h2>
+    <p>
+      Customer: ${escapeHTML(i.customer)}<br>
+      Date: ${escapeHTML(i.date)}
+    </p>
+
+    <table>
+      <tr><th>Item</th><th>Qty</th><th>Price</th><th>GST</th><th>Total</th></tr>
+      ${i.items.map(x=>`
+        <tr>
+          <td>${escapeHTML(x.name)}</td>
+          <td>${x.qty}</td>
+          <td>${money(x.price)}</td>
+          <td>${x.gst}%</td>
+          <td>${money(x.qty*x.price*(1+x.gst/100))}</td>
+        </tr>
+      `).join("")}
+    </table>
+
+    <h3 class="right">Subtotal: ${money(i.subtotal)}</h3>
+    <h3 class="right">GST: ${money(i.tax)}</h3>
+    <h2 class="right total">Total: ${money(i.total)}</h2>
+    <p class="right">Paid: ${money(i.paid)} | Due: ${money(i.due)}</p>
+    <hr>
+    <p>Thank you for shopping with us!</p>
+
+    <script>
+      window.onload=()=>window.print();
+    <\/script>
+  </body>
+  </html>
+  `);
+
+  w.document.close();
 }
-function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='shopbill-backup.json';a.click();URL.revokeObjectURL(a.href)}
-showPage('overview');
+
+/* ------------------ BACKUP EXPORT ------------------ */
+function exportData(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="shopbill-backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ------------------ APP START ------------------ */
+if(getSession()){
+  initializeShop();
+  showApp();
+}else{
+  setAuthMode("register");
+}
 </script>
 </body>
-  </html>
+</html>
