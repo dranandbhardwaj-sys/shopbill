@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>ShopBill — Smart Billing</title>
+<style>
+:root{--g:#0f766e;--bg:#f4f7f6;--card:#fff;--b:#e2e9e7;--t:#172b28;--mut:#6b7c79;--red:#dc2626;--ok:#087443;--soft:#e5f5ef;--warn:#fef3c7;--warnt:#92400e;color-scheme:light}
+:root[data-theme=dark]{--bg:#0d1514;--card:#15201f;--b:#25403c;--t:#e6f1ef;--mut:#8ea6a1;--red:#f87171;--ok:#4ade80;--soft:#14312d;--warn:#3a2f10;--warnt:#fcd34d;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--t);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+.hidden{display:none!important}.muted{color:var(--mut)}.tiny{font-size:12px}.danger{color:var(--red)}.okc{color:var(--ok)}.r{text-align:right}
+h1{font-size:24px;margin:8px 0 4px}h3{margin:0 0 10px;font-size:16px}
+header{background:var(--card);border-bottom:1px solid var(--b);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:4}
+.brand{font-weight:800;font-size:20px}.brand span{background:var(--g);color:#fff;padding:6px 10px;border-radius:10px;margin-right:8px}
+.pillbtn{border:1px solid var(--b);background:var(--card);border-radius:20px;padding:5px 11px;font-size:12px;color:var(--mut)}
+.pillbtn.on{color:var(--ok)}.pillbtn.off{color:var(--red)}.pillbtn.wait{color:var(--warnt)}
+main{max-width:760px;margin:auto;padding:14px 14px 96px}
+.card{background:var(--card);border:1px solid var(--b);border-radius:14px;padding:14px;margin:12px 0}
+.card.sm{padding:10px 12px;margin:8px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.grid .card{margin:0}
+.metric{font-size:21px;font-weight:800;margin-top:4px}
+.btn{border:1px solid var(--b);background:var(--card);padding:10px 13px;border-radius:10px;font-weight:700;text-decoration:none;display:inline-block;text-align:center}
+.btn.primary{background:var(--g);color:#fff;border-color:var(--g)}.btn.block{width:100%;margin-top:6px}.btn.sm{padding:6px 10px}.btn:disabled{opacity:.45}
+.field{display:grid;gap:5px;margin:9px 0}.field label{font-size:12px;color:var(--mut);font-weight:700}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--b);border-radius:9px;background:var(--card)}
+input[type=checkbox]{width:22px;height:22px;padding:0}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:96px}.row.nw{flex-wrap:nowrap}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.row3 .btn{padding:9px 4px;font-size:13px}
+.li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--b);cursor:pointer}
+.li:last-child{border-bottom:0}.li.nb{border:0;padding-top:2px}.li .r{white-space:nowrap}
+.scroll{overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--b);font-size:13px}th{color:var(--mut)}th.r,td.r{text-align:right}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--b);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+.tabs button{flex:1;border:0;background:none;color:var(--mut);padding:8px 2px 7px;font-size:11px;display:grid;gap:2px;justify-items:center}
+.tabs button span{font-size:20px}.tabs button.on{color:var(--g);font-weight:800}
+.seg{display:flex;background:var(--bg);border-radius:10px;padding:3px;margin-bottom:8px}.seg button{flex:1;border:0;background:none;padding:9px;border-radius:8px;font-weight:700;color:var(--mut)}.seg button.on{background:var(--card);color:var(--g);box-shadow:0 1px 3px #0002}
+.pwrow{display:flex;gap:8px}.pwrow .btn{flex:0 0 auto}
+.warn{background:var(--warn);color:var(--warnt);border-radius:10px;padding:10px;margin:8px 0;font-size:13px}
+.note{background:var(--soft);border-radius:10px;padding:12px;white-space:pre-wrap}
+.sum{margin:10px 0}.sum div{display:flex;justify-content:space-between;padding:4px 0}.sum .gt{border-top:2px solid var(--t);margin-top:4px;padding-top:8px;font-size:18px}
+.stepper{display:flex;gap:4px;margin-top:4px;justify-content:flex-end}.stepper button{border:1px solid var(--b);background:var(--card);border-radius:7px;min-width:34px;height:30px}
+.top{display:flex;align-items:center;gap:10px}.top h1{margin:6px 0}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}.tile{background:var(--card);border:1px solid var(--b);border-radius:14px;padding:16px 10px;font-weight:700;display:grid;gap:6px;justify-items:center}.tile span{font-size:26px}
+.sw{display:flex;gap:10px;flex-wrap:wrap}.sw button{width:38px;height:38px;border-radius:50%;border:3px solid transparent}.sw button.on{border-color:var(--t)}
+.pill{background:var(--soft);color:var(--ok);border-radius:20px;padding:3px 9px;font-size:12px;font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--card);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:14px}
+.sheet-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;position:sticky;top:-14px;background:var(--card);padding:6px 0;z-index:1}
+@media(min-width:700px){.modal{align-items:center}.sheet{border-radius:16px}}
+body.noscroll{overflow:hidden}
+#toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:#111;color:#fff;padding:11px 16px;border-radius:12px;max-width:92%;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:30;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%)}#toast.err{background:#b91c1c}
+body.busy{cursor:progress}body.busy .btn.primary{opacity:.6;pointer-events:none}
+body.busy::before{content:"";position:fixed;top:0;left:0;right:0;height:3px;background:var(--g);z-index:40;animation:bar 1s linear infinite}
+@keyframes bar{0%{transform:scaleX(0);transform-origin:left}50%{transform:scaleX(1);transform-origin:left}51%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+.inv{background:#fff;color:#111;border:1px solid #ddd;padding:14px;font-size:13px;margin:0 auto}
+.inv.a4{max-width:560px}.inv.p80{max-width:300px;font-size:12px}
+.inv h2{margin:0;font-size:17px;text-align:center}.inv .c{text-align:center}.inv .ttl{text-align:center;font-weight:800;letter-spacing:1px;margin:8px 0;border-top:1px solid #111;border-bottom:1px solid #111;padding:3px 0}
+.inv table{margin:8px 0}.inv th,.inv td{padding:4px 3px;border-bottom:1px dashed #bbb;color:#111;font-size:inherit}.inv th{color:#555}
+.inv .tot td{border-bottom:0}.inv .big td{font-weight:800;font-size:1.1em;border-top:2px solid #111}
+@media print{
+ body{background:#fff}.no-print,#toast,.tabs,header{display:none!important}
+ body.pinv #app{display:none!important}
+ body.pinv .modal{position:static;background:none;padding:0;display:block!important;overflow:visible}
+ body.pinv .sheet{box-shadow:none;max-height:none;overflow:visible;border-radius:0;padding:0;width:auto;max-width:none;background:#fff}
+ body.pinv .inv{border:0}main{padding:0}
+}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="no-print"><div class="brand"><span>S</span>ShopBill</div><button id="status" class="pillbtn wait" onclick="boot()">Connecting…</button></header>
+<main>
+<section id="auth" class="hidden">
+ <h1>ShopBill</h1><p class="muted">Dukaan ka GST billing, stock aur udhaar khata, ek jagah.</p>
+ <form class="card" onsubmit="event.preventDefault();submitAuth()">
+  <div class="seg"><button type="button" id="tabL" class="on" onclick="setMode('login')">Login</button><button type="button" id="tabR" onclick="setMode('register')">Naya account</button></div>
+  <div id="regOnly" class="hidden">
+   <div class="field"><label>Dukaan ka naam</label><input id="shop" placeholder="Anand General Store" autocomplete="organization"></div>
+   <div class="field"><label>Aapka naam</label><input id="owner" placeholder="Owner ka naam" autocomplete="name"></div>
+  </div>
+  <div class="field"><label>Email</label><input id="email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email"></div>
+  <div class="field"><label>Password</label><div class="pwrow"><input id="pw" type="password" minlength="8" placeholder="Kam se kam 8 akshar" autocomplete="current-password"><button type="button" class="btn" onclick="togglePw()">Dikhao</button></div></div>
+  <button id="authBtn" class="btn primary block" type="submit">Login karo</button>
+  <p class="tiny muted">Pehli baar server jagne mein 30–60 second lag sakte hain (free server).</p>
+ </form>
+</section>
+<section id="workspace" class="hidden"><div id="view"></div></section>
+</main>
+<nav id="tabs" class="tabs no-print hidden"></nav>
+</div>
+<div id="modal" class="modal hidden" onclick="if(event.target===this)closeModal()"><div class="sheet"><div class="sheet-bar no-print" id="sheetbar"></div><div id="sheet"></div></div></div>
+<div id="toast"></div>
+
+<script>
+"use strict";
+/* ---------- helpers ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num=v=>{const n=Number(v);return Number.isFinite(n)?n:0};
+const r2=n=>Math.round((num(n)+Number.EPSILON)*100)/100;
+const money=n=>"₹"+num(n).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+const today=()=>new Date(Date.now()+19800000).toISOString().slice(0,10);
+const addDays=(d,n)=>{const x=new Date(d+"T00:00:00Z");x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)};
+const fmtDate=d=>{if(!d)return"";const p=String(d).split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:d};
+const ls=k=>{try{return localStorage.getItem(k)||""}catch{return""}};
+const lset=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
+const phoneDigits=p=>{let d=String(p||"").replace(/\D/g,"").replace(/^0+/,"");if(d.length===10)d="91"+d;return d.length>=11&&d.length<=15?d:""};
+
+/* ---------- settings (saved on this device) ---------- */
+const DEF={theme:"auto",accent:"#0f766e",defGst:0,lowStock:5,paper:"a4",footer:"Dhanyavad! Phir padhariye.",upi:"",showCoins:true};
+let S={...DEF};
+try{S={...DEF,...JSON.parse(ls("sb_settings")||"{}")}}catch{}
+if(!/^#[0-9a-f]{6}$/i.test(S.accent))S.accent=DEF.accent;
+function applyTheme(){let t=S.theme;if(t==="auto")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t;document.documentElement.style.setProperty("--g",S.accent);document.querySelector("meta[name=theme-color]").content=S.accent}
+function saveS(){lset("sb_settings",JSON.stringify(S));applyTheme()}
+function setS(k,v){S[k]=v;saveS();toast("Setting save ho gayi")}
+
+/* ---------- state ---------- */
+let token=ls("sb_token"),me=null,cache={products:[],customers:[],bills:[],payments:[],coins:[],coinBalance:0};
+let cur="home",lock=false,authMode="login",lastMsg="";
+let draft={cid:"0",items:[],paid:null};
+const lim={bills:30,cust:40,prod:40};
+let rp={preset:"month",from:"",to:""};
+
+/* ---------- ui plumbing ---------- */
+let tt;
+function toast(m,err){const t=$("toast");t.textContent=m;t.className="show"+(err?" err":"");clearTimeout(tt);tt=setTimeout(()=>{t.className=""},3800)}
+async function guard(fn){if(lock)return;lock=true;document.body.classList.add("busy");try{await fn()}catch(e){toast(e.message||"Kuch gadbad ho gayi",true)}finally{lock=false;document.body.classList.remove("busy")}}
+function setStatus(c,t){const s=$("status");s.className="pillbtn "+c;s.textContent=t}
+function openModal(html,bar){$("sheet").innerHTML=html;$("sheetbar").innerHTML=bar||'<button class="btn" onclick="closeModal()">Band karo</button>';$("modal").classList.remove("hidden");document.body.classList.add("noscroll")}
+function closeModal(){$("modal").classList.add("hidden");document.body.classList.remove("noscroll")}
+addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+addEventListener("afterprint",()=>document.body.classList.remove("pinv"));
+function dl(name,type,content){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
+function setPageStyle(css){let st=$("pgstyle");if(!st){st=document.createElement("style");st.id="pgstyle";document.head.appendChild(st)}st.textContent=css}
+function printPage(){setPageStyle("@page{size:A4;margin:12mm}");window.print()}
+
+/* ---------- api ---------- */
+async function api(path,opts={}){
+ let r;
+ try{r=await fetch("/api"+path,{...opts,headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{})}})}
+ catch{throw Error("Server se connect nahi ho paya. Internet check karo ya thodi der baad try karo.")}
+ const j=await r.json().catch(()=>({error:"Server ne galat jawab diya"}));
+ if(r.status===401&&token&&!path.startsWith("/auth/")){doLogout(true);throw Error(j.error||"Session khatam. Dobara login karo.")}
+ if(!r.ok)throw Error(j.error||"Request fail ho gayi");
+ return j}
+async function ping(){for(let i=0;i<3;i++){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),30000);const r=await fetch("/api/health",{signal:c.signal,cache:"no-store"});clearTimeout(t);if(r.ok)return true}catch{}}return false}
+async function load(){cache=await api("/data")}
+
+/* ---------- auth / boot ---------- */
+function setMode(m){authMode=m;$("tabL").classList.toggle("on",m==="login");$("tabR").classList.toggle("on",m==="register");$("regOnly").classList.toggle("hidden",m!=="register");$("authBtn").textContent=m==="login"?"Login karo":"Account banao";$("pw").autocomplete=m==="login"?"current-password":"new-password"}
+function togglePw(){const p=$("pw");p.type=p.type==="password"?"text":"password"}
+function showAuth(){$("workspace").classList.add("hidden");$("tabs").classList.add("hidden");$("auth").classList.remove("hidden")}
+function submitAuth(){guard(async()=>{
+ const body={email:$("email").value.trim(),password:$("pw").value};
+ if(authMode==="register"){body.shopName=$("shop").value.trim();body.ownerName=$("owner").value.trim()}
+ const j=await api("/auth/"+authMode,{method:"POST",body:JSON.stringify(body)});
+ token=j.token;lset("sb_token",token);$("pw").value="";await enter()})}
+async function enter(){
+ me=await api("/me");await load();setStatus("on","Connected");
+ $("auth").classList.add("hidden");$("workspace").classList.remove("hidden");$("tabs").classList.remove("hidden");go("home")}
+function doLogout(expired){token="";lset("sb_token","");me=null;cache={products:[],customers:[],bills:[],payments:[],coins:[],coinBalance:0};draft={cid:"0",items:[],paid:null};closeModal();showAuth();setMode("login");if(expired)toast("Session khatam. Dobara login karo.",true)}
+function logout(){if(confirm("Log out karna hai?"))doLogout(false)}
+let booting=false;
+async function boot(){
+ if(booting)return;booting=true;
+ try{
+  setStatus("wait","Server se connect ho raha hai…");
+  if(!(await ping())){setStatus("off","Server offline · dobara try");showAuth();toast("Server abhi nahi mil raha. Free server ko jagne mein 1 minute lag sakta hai.",true);return}
+  setStatus("on","Connected");
+  if(token){try{await enter();return}catch{}}
+  showAuth()
+ }finally{booting=false}}
+
+/* ---------- navigation ---------- */
+const TABS=[["home","🏠","Home"],["bill","🧾","Naya bill"],["products","📦","Stock"],["customers","👥","Ledger"],["more","☰","Aur"]];
+const SUB={bills:"more",reports:"more",coins:"more",profile:"more",settings:"more",plans:"more"};
+function go(p){closeModal();cur=p;render();scrollTo(0,0)}
+function render(){
+ $("tabs").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.p===cur||b.dataset.p===SUB[cur]));
+ $("view").innerHTML=PAGES[cur]();
+ if(AFTER[cur])AFTER[cur]()}
+$("tabs").innerHTML=TABS.map(t=>`<button data-p="${t[0]}" onclick="go('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join("");
+const sub=t=>`<div class="top"><button class="btn sm" onclick="go('more')">←</button><h1>${t}</h1></div>`;
+
+/* ---------- tax / bill maths ---------- */
+function calc(items){let sub=0,tax=0,by={};for(const i of items){const t=i.qty*i.price,g=t*i.gst/100;sub+=t;tax+=g;const k=String(i.gst);by[k]=by[k]||{taxable:0,gst:0};by[k].taxable+=t;by[k].gst+=g}return{sub:r2(sub),tax:r2(tax),total:r2(sub+tax),by}}
+const lineAmt=i=>i.qty*i.price*(1+i.gst/100);
+
+/* ---------- HOME ---------- */
+function billRow(b){return `<div class="li" onclick="showInvoice(${b.id})"><div><b>${esc(b.number)}</b> · ${esc(b.customer)}<div class="tiny muted">${fmtDate(b.date)}</div></div><div class="r"><b>${money(b.total)}</b>${b.due>0?`<div class="tiny danger">Baaki ${money(b.due)}</div>`:'<div class="tiny okc">Paid</div>'}</div></div>`}
+function pgHome(){
+ const t=today(),mo=t.slice(0,7);
+ const tot=f=>money(cache.bills.filter(f).reduce((s,b)=>s+num(b.total),0));
+ const due=cache.customers.reduce((s,c)=>s+Math.max(0,num(c.balance)),0);
+ const low=cache.products.filter(p=>num(p.stock)<=S.lowStock);
+ const dues=cache.customers.filter(c=>num(c.balance)>0).sort((a,b)=>b.balance-a.balance).slice(0,5);
+ const recent=cache.bills.slice(-5).reverse();
+ return `<h1>Namaste 👋</h1><p class="muted">${esc(me.shop.name)}</p>
+ <div class="row3"><button class="btn primary" onclick="go('bill')">+ Naya bill</button><button class="btn" onclick="go('products')">+ Product</button><button class="btn" onclick="go('customers')">+ Grahak</button></div>
+ <div class="grid" style="margin-top:12px"><div class="card"><span class="muted tiny">Aaj ki bikri</span><div class="metric">${tot(b=>b.date===t)}</div></div>
+ <div class="card"><span class="muted tiny">Is mahine</span><div class="metric">${tot(b=>String(b.date).startsWith(mo))}</div></div>
+ <div class="card"><span class="muted tiny">Total baaki (udhaar)</span><div class="metric danger">${money(due)}</div></div>
+ ${S.showCoins?`<div class="card"><span class="muted tiny">Coins</span><div class="metric">${cache.coinBalance||0} 🪙</div></div>`:`<div class="card"><span class="muted tiny">Bills</span><div class="metric">${cache.bills.length}</div></div>`}</div>
+ ${low.length?`<div class="card"><h3>⚠️ Kam stock (${low.length})</h3>${low.slice(0,6).map(p=>`<div class="li" onclick="go('products')"><span>${esc(p.name)}</span><b class="danger">${p.stock}</b></div>`).join("")}</div>`:""}
+ ${dues.length?`<div class="card"><h3>Sabse zyada baaki</h3>${dues.map(c=>`<div class="li" onclick="stmt(${c.id})"><span>${esc(c.name)}</span><b class="danger">${money(c.balance)}</b></div>`).join("")}</div>`:""}
+ <div class="card"><h3>Recent bills</h3>${recent.length?recent.map(billRow).join(""):'<p class="muted">Abhi koi bill nahi. "Naya bill" se shuru karo.</p>'}</div>`}
+
+/* ---------- NEW BILL ---------- */
+function pgBill(){
+ const opts=cache.customers.map(c=>`<option value="${c.id}" ${String(c.id)===draft.cid?"selected":""}>${esc(c.name)}${c.balance>0?" · baaki "+money(c.balance):""}</option>`).join("");
+ const popts=cache.products.map(p=>`<option value="${p.id}">${esc(p.name)} (stock ${p.stock})</option>`).join("");
+ return `<h1>Naya bill</h1>
+ <div class="card"><div class="field"><label>Grahak</label><div class="row nw"><select id="bc" onchange="draft.cid=this.value"><option value="0">Walk-in (cash)</option>${opts}</select><button class="btn" style="flex:0 0 auto" onclick="quickCustomer()">+ Naya</button></div></div></div>
+ <div class="card"><h3>Item jodo</h3>
+  <div class="field"><label>Stock se chuno (ya neeche khud likho)</label><select id="ip" onchange="pickProduct()"><option value="">— Khud likhunga —</option>${popts}</select></div>
+  <div class="field"><label>Item ka naam</label><input id="in" placeholder="Jaise: Chawal 1kg" autocomplete="off"></div>
+  <div class="row"><div class="field"><label>Qty</label><input id="iq" type="number" inputmode="decimal" min="0" step="any" value="1"></div>
+  <div class="field"><label>Rate ₹ (GST se pehle)</label><input id="ir" type="number" inputmode="decimal" min="0" step="any"></div>
+  <div class="field"><label>GST %</label><input id="ig" type="number" inputmode="decimal" min="0" max="100" step="any" list="gstl" value="${S.defGst}"></div></div>
+  <datalist id="gstl"><option value="0"><option value="5"><option value="12"><option value="18"><option value="28"></datalist>
+  <button class="btn primary block" onclick="addItem()">+ Item add karo</button></div>
+ <div id="lines"></div>`}
+function pickProduct(){const p=cache.products.find(x=>String(x.id)===$("ip").value);if(!p)return;$("in").value=p.name;$("ir").value=p.price;$("ig").value=p.gst;$("iq").focus()}
+function addItem(){
+ const name=$("in").value.trim(),qty=num($("iq").value),price=$("ir").value===""?NaN:num($("ir").value),gst=num($("ig").value);
+ if(!name)return toast("Item ka naam likho",true);
+ if(!(qty>0))return toast("Quantity 0 se zyada honi chahiye",true);
+ if(!(price>=0))return toast("Rate likho",true);
+ if(gst<0||gst>100)return toast("GST 0 se 100 ke beech hona chahiye",true);
+ const pr=cache.products.find(p=>p.name.toLowerCase()===name.toLowerCase());
+ if(pr&&qty>pr.stock)toast("Dhyaan do: stock mein sirf "+pr.stock+" bacha hai",true);
+ draft.items.push({name,qty,price,gst});
+ $("ip").value="";$("in").value="";$("iq").value="1";$("ir").value="";$("ig").value=S.defGst;
+ renderLines();$("in").focus()}
+function chg(k,d){const i=draft.items[k];if(!i)return;i.qty=r2(i.qty+d);if(i.qty<=0)draft.items.splice(k,1);renderLines()}
+function rm(k){draft.items.splice(k,1);renderLines()}
+function setPaid(v){draft.paid=v;renderLines()}
+function updDue(){const el=$("dueTxt");if(!el)return;const c=calc(draft.items),p=draft.paid===null?c.total:num(draft.paid),d=r2(c.total-p);el.innerHTML=d>0?`Baaki (udhaar): <b class="danger">${money(d)}</b>`:(p>c.total?"Zyada paid: bill se upar ka paisa jodte nahi":"Poora paid ✅")}
+function renderLines(){
+ const el=$("lines");if(!el)return;
+ if(!draft.items.length){el.innerHTML='<div class="card"><p class="muted">Abhi koi item nahi jora. Upar se item add karo.</p></div>';return}
+ const c=calc(draft.items),paid=draft.paid===null?c.total:num(draft.paid);
+ el.innerHTML=`<div class="card"><h3>Bill (${draft.items.length} item)</h3>
+ ${draft.items.map((i,k)=>`<div class="li" style="cursor:default"><div><b>${esc(i.name)}</b><div class="tiny muted">${i.qty} × ${money(i.price)} · GST ${i.gst}%</div></div><div class="r"><b>${money(lineAmt(i))}</b><div class="stepper"><button onclick="chg(${k},-1)">−</button><button onclick="chg(${k},1)">+</button><button onclick="rm(${k})">✕</button></div></div></div>`).join("")}
+ <div class="sum"><div><span>Subtotal</span><b>${money(c.sub)}</b></div>${c.tax>0?`<div><span>CGST</span><b>${money(c.tax/2)}</b></div><div><span>SGST</span><b>${money(c.tax/2)}</b></div>`:""}<div class="gt"><span>Total</span><b>${money(c.total)}</b></div></div>
+ <div class="field"><label>Abhi mile (Paid ₹)</label><input id="pd" type="number" inputmode="decimal" min="0" step="any" value="${paid}" oninput="draft.paid=this.value;updDue()"></div>
+ <div class="row3" style="grid-template-columns:1fr 1fr"><button class="btn" onclick="setPaid(null)">Poora paid</button><button class="btn" onclick="setPaid(0)">Udhaar (0)</button></div>
+ <p id="dueTxt" class="tiny"></p>
+ <button class="btn primary block" onclick="saveBill()">💾 Bill save karo</button></div>`;
+ updDue()}
+function quickCustomer(){
+ const name=(prompt("Grahak ka naam")||"").trim();if(!name)return;
+ const phone=(prompt("Phone number (optional)")||"").trim();
+ guard(async()=>{const c=await api("/customers",{method:"POST",body:JSON.stringify({name,phone})});await load();draft.cid=String(c.id);render();toast("Grahak jud gaya")})}
+function saveBill(){guard(async()=>{
+ if(!draft.items.length)throw Error("Pehle kam se kam ek item jodo");
+ const c=calc(draft.items),paid=draft.paid===null?c.total:num(draft.paid);
+ if(paid<0)throw Error("Paid amount galat hai");
+ if(draft.cid==="0"&&paid<c.total-0.005&&!confirm("Walk-in grahak ka udhaar ledger mein save nahi hoga. Phir bhi bill banayein?"))return;
+ const j=await api("/bills",{method:"POST",body:JSON.stringify({customerId:Number(draft.cid)||0,items:draft.items,paid})});
+ draft={cid:"0",items:[],paid:null};
+ await load();toast("Bill ban gaya: "+j.number);render();showInvoice(j.id)})}
+
+/* ---------- INVOICE ---------- */
+function showInvoice(id){
+ const b=cache.bills.find(x=>x.id===id);if(!b)return;
+ openModal(invoiceHtml(b),`<button class="btn primary" onclick="printInv()">🖨 Print / PDF</button><button class="btn" onclick="shareBill(${b.id})">📲 WhatsApp</button><button class="btn" onclick="closeModal()">Band karo</button>`)}
+function invoiceHtml(b){
+ const sh=me.shop,c=calc(b.items),cust=cache.customers.find(x=>x.id===b.customerId),tax=r2(b.total-c.sub);
+ const rates=Object.keys(c.by).map(Number).filter(r=>r>0).sort((a,b)=>a-b);
+ const gstRows=rates.map(r=>{const x=c.by[String(r)];return `<tr><td>${r}%</td><td class="r">${money(x.taxable)}</td><td class="r">${money(x.gst/2)}</td><td class="r">${money(x.gst/2)}</td></tr>`}).join("");
+ return `<div class="inv ${S.paper==="80"?"p80":"a4"}">
+ <h2>${esc(sh.name)}</h2>
+ <div class="c">${esc(sh.address||"")}${sh.address?"<br>":""}${sh.phone?"Ph: "+esc(sh.phone):""}${sh.gstin?" · GSTIN: "+esc(sh.gstin):""}</div>
+ <div class="ttl">${sh.gstin?"TAX INVOICE":"BILL / INVOICE"}</div>
+ <div>Bill no: <b>${esc(b.number)}</b> · Date: ${fmtDate(b.date)}<br>Grahak: ${esc(b.customer)}${cust&&cust.phone?" ("+esc(cust.phone)+")":""}</div>
+ <table><tr><th>#</th><th>Item</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr>
+ ${b.items.map((i,k)=>`<tr><td>${k+1}</td><td>${esc(i.name)}</td><td class="r">${i.qty}</td><td class="r">${money(i.price)}</td><td class="r">${money(i.qty*i.price)}</td></tr>`).join("")}</table>
+ ${gstRows?`<table><tr><th>GST</th><th class="r">Taxable</th><th class="r">CGST</th><th class="r">SGST</th></tr>${gstRows}</table>`:""}
+ <table class="tot"><tr><td>Subtotal</td><td class="r">${money(c.sub)}</td></tr>${tax>0?`<tr><td>GST (CGST+SGST)</td><td class="r">${money(tax)}</td></tr>`:""}
+ <tr class="big"><td>Total</td><td class="r">${money(b.total)}</td></tr><tr><td>Paid</td><td class="r">${money(b.paid)}</td></tr>${b.due>0?`<tr><td><b>Baaki</b></td><td class="r"><b>${money(b.due)}</b></td></tr>`:""}</table>
+ ${S.upi?`<div class="c">UPI: <b>${esc(S.upi)}</b></div>`:""}
+ ${S.footer?`<div class="c" style="margin-top:8px">${esc(S.footer)}</div>`:""}</div>`}
+function printInv(){setPageStyle(S.paper==="80"?"@page{size:80mm auto;margin:3mm}":"@page{size:A4;margin:12mm}");document.body.classList.add("pinv");setTimeout(()=>window.print(),60)}
+function shareBill(id){
+ const b=cache.bills.find(x=>x.id===id);if(!b)return;
+ const cust=cache.customers.find(x=>x.id===b.customerId),d=phoneDigits(cust&&cust.phone);
+ const msg=[me.shop.name,`Bill ${b.number} · ${fmtDate(b.date)}`,"",...b.items.map(i=>`${i.name} x${i.qty} = ${money(lineAmt(i))}`),"",`Total: ${money(b.total)}`,`Paid: ${money(b.paid)}`,...(b.due>0?[`Baaki: ${money(b.due)}`]:[]),...(S.upi?[`UPI: ${S.upi}`]:[]),"",S.footer].join("\n");
+ window.open("https://wa.me/"+(d||"")+"?text="+encodeURIComponent(msg),"_blank")}
+
+/* ---------- STOCK ---------- */
+function pgProducts(){
+ return `<h1>Stock</h1>
+ <div class="card"><h3>Product add / restock</h3>
+ <div class="field"><label>Naam</label><input id="pn" placeholder="Jaise: Chawal 1kg" autocomplete="off"></div>
+ <div class="row"><div class="field"><label>Rate ₹</label><input id="pp" type="number" inputmode="decimal" min="0" step="any"></div><div class="field"><label>GST %</label><input id="pg" type="number" inputmode="decimal" min="0" max="100" step="any" value="${S.defGst}"></div><div class="field"><label>Stock (qty)</label><input id="ps" type="number" inputmode="decimal" min="0" step="any"></div></div>
+ <button class="btn primary block" onclick="addProduct()">Save karo</button>
+ <p class="tiny muted">Same naam dobara daalne par rate/GST update hoga aur stock jud jayega.</p></div>
+ <div class="card"><input id="pq" placeholder="🔍 Product dhundo" oninput="lim.prod=40;plist()"><div id="plist"></div></div>`}
+function plist(){
+ const q=($("pq").value||"").toLowerCase().trim(),rows=cache.products.filter(p=>p.name.toLowerCase().includes(q));
+ $("plist").innerHTML=rows.length?rows.slice(0,lim.prod).map(p=>{const lo=num(p.stock)<=S.lowStock;return `<div class="li" onclick="prefill(${p.id})"><div><b>${esc(p.name)}</b><div class="tiny muted">${money(p.price)} · GST ${p.gst}%</div></div><div class="r"><b class="${lo?"danger":""}">${p.stock}</b><div class="tiny ${lo?"danger":"muted"}">${lo?"Kam stock":"stock"}</div></div></div>`}).join("")+(rows.length>lim.prod?'<button class="btn block" onclick="lim.prod+=40;plist()">Aur dikhao</button>':""):'<p class="muted">Koi product nahi mila.</p>'}
+function prefill(id){const p=cache.products.find(x=>x.id===id);if(!p)return;$("pn").value=p.name;$("pp").value=p.price;$("pg").value=p.gst;$("ps").value="";$("ps").focus();scrollTo(0,0);toast("Kitna stock jodna hai woh qty daalo")}
+function addProduct(){guard(async()=>{
+ await api("/products",{method:"POST",body:JSON.stringify({name:$("pn").value.trim(),price:$("pp").value===""?null:num($("pp").value),gst:num($("pg").value),stock:num($("ps").value)})});
+ await load();render();toast("Product save ho gaya")})}
+
+/* ---------- LEDGER ---------- */
+function pgCustomers(){
+ return `<h1>Udhaar khata</h1>
+ <div class="card"><h3>Naya grahak</h3><div class="row"><input id="cn" placeholder="Naam" autocomplete="off"><input id="cp" placeholder="Phone" inputmode="tel" autocomplete="off"></div><button class="btn primary block" onclick="addCustomer()">Add karo</button></div>
+ <div class="card"><input id="cq" placeholder="🔍 Grahak dhundo" oninput="lim.cust=40;clist()"></div><div id="clist"></div>`}
+function clist(){
+ const q=($("cq").value||"").toLowerCase().trim(),rows=cache.customers.filter(c=>(c.name+" "+(c.phone||"")).toLowerCase().includes(q));
+ $("clist").innerHTML=rows.length?rows.slice(0,lim.cust).map(c=>`<div class="card sm"><div class="li nb" style="cursor:default"><div><b>${esc(c.name)}</b><div class="tiny muted">${esc(c.phone||"phone nahi")}</div></div><b class="${c.balance>0?"danger":""}">${money(c.balance)}</b></div>
+ <div class="row3"><button class="btn" onclick="recv(${c.id})" ${c.balance>0?"":"disabled"}>Payment lo</button><button class="btn" onclick="stmt(${c.id})">Khata</button><button class="btn" onclick="remind('whatsapp',${c.id})" ${c.balance>0?"":"disabled"}>📲 Yaad dilao</button></div></div>`).join("")+(rows.length>lim.cust?'<button class="btn block" onclick="lim.cust+=40;clist()">Aur dikhao</button>':""):'<div class="card"><p class="muted">Koi grahak nahi mila.</p></div>'}
+function addCustomer(){guard(async()=>{await api("/customers",{method:"POST",body:JSON.stringify({name:$("cn").value.trim(),phone:$("cp").value.trim()})});await load();render();toast("Grahak jud gaya")})}
+function recv(id){
+ const c=cache.customers.find(x=>x.id===id);if(!c)return;
+ const a=num(prompt("Kitna paisa mila? (₹)",c.balance));if(!(a>0))return;
+ guard(async()=>{await api("/payments",{method:"POST",body:JSON.stringify({customerId:id,amount:a})});await load();render();toast(money(a)+" jama ho gaya")})}
+function stmt(id){
+ const c=cache.customers.find(x=>x.id===id);if(!c)return;
+ const ev=[...cache.bills.filter(b=>b.customerId===id&&b.due>0).map(b=>({d:b.date,k:b.id,t:"Bill "+b.number,a:b.due})),...cache.payments.filter(p=>p.customerId===id).map(p=>({d:p.date,k:p.id,t:"Payment mila",a:-p.amount}))].sort((x,y)=>String(x.d).localeCompare(String(y.d))||x.k-y.k);
+ let run=0;
+ const rows=ev.map(e=>{run=r2(run+e.a);return `<tr><td>${fmtDate(e.d)}</td><td>${esc(e.t)}</td><td class="r ${e.a>0?"danger":"okc"}">${e.a>0?"+":"−"}${money(Math.abs(e.a))}</td><td class="r">${money(run)}</td></tr>`}).join("");
+ openModal(`<h3>${esc(c.name)} ka khata</h3><p class="muted">${esc(c.phone||"")}</p><div class="scroll"><table><tr><th>Date</th><th>Detail</th><th class="r">Amount</th><th class="r">Balance</th></tr>${rows||'<tr><td colspan="4" class="muted">Abhi koi lena-dena nahi.</td></tr>'}</table></div><p><b>Abhi baaki: ${money(c.balance)}</b></p>`)}
+function remind(channel,id){guard(async()=>{
+ const j=await api("/reminders",{method:"POST",body:JSON.stringify({customerId:id,channel})});
+ lastMsg=j.message;await load();render();
+ const okUrl=j.url&&/^(https:\/\/wa\.me\/|tel:)/.test(j.url);
+ let bar="";
+ if(okUrl&&channel==="whatsapp")bar=`<a class="btn primary" href="${esc(j.url)}" target="_blank" rel="noopener">📲 WhatsApp kholo</a>`;
+ else if(okUrl&&channel==="call")bar=`<a class="btn primary" href="${esc(j.url)}">📞 Call karo</a>`;
+ else bar='<button class="btn primary" onclick="shareLast()">Share karo</button>';
+ openModal(`<h3>Yaad dilane ka message</h3><div class="note">${esc(j.message)}</div>`,bar+'<button class="btn" onclick="copyLast()">Copy</button><button class="btn" onclick="closeModal()">Band karo</button>')})}
+function shareLast(){if(navigator.share)navigator.share({text:lastMsg}).catch(()=>{});else copyLast()}
+function copyLast(){(navigator.clipboard?navigator.clipboard.writeText(lastMsg):Promise.reject()).then(()=>toast("Copy ho gaya"),()=>toast("Copy nahi ho paya",true))}
+
+/* ---------- MORE ---------- */
+function pgMore(){
+ const t=[["bills","📄","Saare bills"],["reports","📊","Reports & GST"],S.showCoins?["coins","🪙","Coins & reminder"]:null,["profile","🏪","Dukaan profile"],["settings","⚙️","Advanced settings"],["plans","⭐","₹51 Plan"]].filter(Boolean);
+ return `<h1>Aur options</h1><div class="tiles">${t.map(x=>`<button class="tile" onclick="go('${x[0]}')"><span>${x[1]}</span>${x[2]}</button>`).join("")}<button class="tile" onclick="logout()"><span>🚪</span>Log out</button></div>`}
+
+/* ---------- BILLS HISTORY ---------- */
+function pgBills(){return `${sub("Saare bills")}<div class="card"><input id="bq" placeholder="🔍 Bill number ya grahak" oninput="lim.bills=30;blist()"><div class="row" style="margin-top:8px"><input id="bf" type="date" onchange="blist()"><input id="bt" type="date" onchange="blist()"></div></div><div class="card"><div id="blist"></div></div>`}
+function blist(){
+ const q=($("bq").value||"").toLowerCase().trim(),f=$("bf").value,t=$("bt").value;
+ const rows=cache.bills.filter(b=>(!q||(b.number+" "+b.customer).toLowerCase().includes(q))&&(!f||b.date>=f)&&(!t||b.date<=t)).reverse();
+ $("blist").innerHTML=(rows.length?`<p class="tiny muted">${rows.length} bill · ${money(rows.reduce((s,b)=>s+b.total,0))}</p>`+rows.slice(0,lim.bills).map(billRow).join("")+(rows.length>lim.bills?'<button class="btn block" onclick="lim.bills+=30;blist()">Aur dikhao</button>':""):'<p class="muted">Koi bill nahi mila.</p>')}
+
+/* ---------- REPORTS ---------- */
+function rpRange(){const t=today();if(rp.preset==="today")return[t,t];if(rp.preset==="7")return[addDays(t,-6),t];if(rp.preset==="month")return[t.slice(0,7)+"-01",t];if(rp.preset==="all")return["",""];return[rp.from,rp.to]}
+function repRows(){const[f,t]=rpRange();return cache.bills.filter(b=>(!f||b.date>=f)&&(!t||b.date<=t))}
+function pgReports(){
+ const[f,t]=rpRange(),o=(v,l)=>`<option value="${v}" ${rp.preset===v?"selected":""}>${l}</option>`;
+ return `${sub("Reports & GST")}<div class="card no-print"><div class="field"><label>Kitne din ki report</label><select onchange="rp.preset=this.value;render()">${o("today","Aaj")}${o("7","Pichhle 7 din")}${o("month","Is mahine")}${o("all","Poori")}${o("custom","Apni dates")}</select></div>
+ <div class="row"><input id="rpf" type="date" value="${f}" onchange="rpDate()"><input id="rpt" type="date" value="${t}" onchange="rpDate()"></div></div><div id="rout"></div>
+ <div class="card no-print"><div class="row3"><button class="btn" onclick="printPage()">🖨 Print</button><button class="btn" onclick="exportCsv()">CSV</button><button class="btn" onclick="exportJson()">Backup</button></div></div>`}
+function rpDate(){rp.preset="custom";rp.from=$("rpf").value;rp.to=$("rpt").value;render()}
+function report(){
+ const rows=repRows(),[f,t]=rpRange();
+ const sales=rows.reduce((s,b)=>s+b.total,0),paid=rows.reduce((s,b)=>s+b.paid,0),due=rows.reduce((s,b)=>s+b.due,0);
+ const gst={},prod={},day={};
+ for(const b of rows){
+  for(const i of b.items){const k=String(i.gst),tx=i.qty*i.price,g=tx*i.gst/100;gst[k]=gst[k]||{t:0,g:0};gst[k].t+=tx;gst[k].g+=g;const p=prod[i.name]=prod[i.name]||{q:0,a:0};p.q+=i.qty;p.a+=lineAmt(i)}
+  const d=day[b.date]=day[b.date]||{n:0,s:0};d.n++;d.s+=b.total}
+ const gr=Object.keys(gst).map(Number).sort((a,b)=>a-b),totTax=gr.reduce((s,k)=>s+gst[String(k)].g,0);
+ const top=Object.entries(prod).sort((a,b)=>b[1].a-a[1].a).slice(0,10),days=Object.entries(day).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,31);
+ $("rout").innerHTML=`<p class="muted tiny">${f?fmtDate(f):"Shuru"} se ${t?fmtDate(t):"aaj"} tak</p>
+ <div class="grid"><div class="card"><span class="muted tiny">Bills</span><div class="metric">${rows.length}</div></div><div class="card"><span class="muted tiny">Bikri</span><div class="metric">${money(sales)}</div></div><div class="card"><span class="muted tiny">Mila (paid)</span><div class="metric">${money(paid)}</div></div><div class="card"><span class="muted tiny">Baaki</span><div class="metric danger">${money(due)}</div></div></div>
+ <div class="card"><h3>GST summary (CGST + SGST)</h3>${gr.length?`<div class="scroll"><table><tr><th>Rate</th><th class="r">Taxable</th><th class="r">CGST</th><th class="r">SGST</th><th class="r">GST</th></tr>${gr.map(k=>{const x=gst[String(k)];return `<tr><td>${k}%</td><td class="r">${money(x.t)}</td><td class="r">${money(x.g/2)}</td><td class="r">${money(x.g/2)}</td><td class="r">${money(x.g)}</td></tr>`}).join("")}<tr><th>Total</th><th></th><th></th><th></th><th class="r">${money(totTax)}</th></tr></table></div>`:'<p class="muted">Koi data nahi.</p>'}</div>
+ <div class="card"><h3>Top products</h3>${top.length?`<div class="scroll"><table><tr><th>Product</th><th class="r">Qty</th><th class="r">Amount</th></tr>${top.map(([n,x])=>`<tr><td>${esc(n)}</td><td class="r">${r2(x.q)}</td><td class="r">${money(x.a)}</td></tr>`).join("")}</table></div>`:'<p class="muted">Koi data nahi.</p>'}</div>
+ <div class="card"><h3>Din ke hisaab se</h3>${days.length?`<div class="scroll"><table><tr><th>Date</th><th class="r">Bills</th><th class="r">Bikri</th></tr>${days.map(([d,x])=>`<tr><td>${fmtDate(d)}</td><td class="r">${x.n}</td><td class="r">${money(x.s)}</td></tr>`).join("")}</table></div>`:'<p class="muted">Koi data nahi.</p>'}</div>`}
+function csvCell(v){if(typeof v==="string"&&/^[=+\-@]/.test(v))v="'"+v;v=String(v??"");return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+function exportCsv(){
+ const rows=[["Bill","Date","Customer","Total","Paid","Due","Items"],...repRows().map(b=>[b.number,b.date,b.customer,b.total,b.paid,b.due,b.items.map(i=>`${i.name} x${i.qty}`).join("; ")])];
+ dl("shopbill-bills-"+today()+".csv","text/csv;charset=utf-8","﻿"+rows.map(r=>r.map(csvCell).join(",")).join("\n"))}
+function exportJson(){dl("shopbill-backup-"+today()+".json","application/json",JSON.stringify({exported:new Date().toISOString(),shop:me.shop,...cache},null,2))}
+
+/* ---------- COINS ---------- */
+function pgCoins(){
+ const opts=cache.customers.filter(c=>c.balance>0).map(c=>`<option value="${c.id}">${esc(c.name)} · ${money(c.balance)}</option>`).join("");
+ const h=cache.coins.slice().reverse().slice(0,30);
+ return `${sub("Coins")}<div class="card"><span class="muted tiny">Coin balance</span><div class="metric">${cache.coinBalance||0} 🪙</div><p class="tiny muted">Bill banane par coin milta hai; yaad dilane (reminder) par coin kharch hota hai.</p></div>
+ <div class="card"><h3>Baaki wale grahak ko yaad dilao</h3>${opts?`<select id="rc">${opts}</select><div class="row3"><button class="btn" onclick="remind('whatsapp',Number($('rc').value))">WhatsApp</button><button class="btn" onclick="remind('call',Number($('rc').value))">Call</button><button class="btn" onclick="remind('share',Number($('rc').value))">Share</button></div>`:'<p class="muted">Abhi kisi ka baaki nahi hai. 🎉</p>'}</div>
+ <div class="card"><h3>Coin history</h3>${h.length?h.map(x=>`<div class="li" style="cursor:default"><div><b>${esc(x.action)}</b><div class="tiny muted">${fmtDate(x.date)} · ${esc(x.note||"")}</div></div><b class="${x.coins<0?"danger":"okc"}">${x.coins>0?"+":""}${x.coins}</b></div>`).join(""):'<p class="muted">Abhi kuch nahi.</p>'}</div>`}
+
+/* ---------- PROFILE ---------- */
+function pgProfile(){const s=me.shop;return `${sub("Dukaan profile")}<div class="card">
+ <div class="field"><label>Dukaan ka naam</label><input id="sn" value="${esc(s.name)}"></div>
+ <div class="field"><label>Owner</label><input id="so" value="${esc(s.owner||"")}"></div>
+ <div class="field"><label>Phone</label><input id="sp" inputmode="tel" value="${esc(s.phone||"")}"></div>
+ <div class="field"><label>Address</label><textarea id="sa" rows="2">${esc(s.address||"")}</textarea></div>
+ <div class="field"><label>GSTIN (invoice par dikhega)</label><input id="sg" maxlength="15" style="text-transform:uppercase" value="${esc(s.gstin||"")}"></div>
+ <button class="btn primary block" onclick="saveProfile()">Save karo</button></div>
+ <p class="tiny muted">Login email: ${esc(me.email)}</p>`}
+function saveProfile(){guard(async()=>{me=await api("/profile",{method:"PUT",body:JSON.stringify({name:$("sn").value,owner:$("so").value,phone:$("sp").value,address:$("sa").value,gstin:$("sg").value})});toast("Profile save ho gayi");render()})}
+
+/* ---------- SETTINGS ---------- */
+function pgSettings(){
+ const sel=(opts,val,fn)=>`<select onchange="${fn}">${opts.map(o=>`<option value="${o[0]}" ${String(o[0])===String(val)?"selected":""}>${o[1]}</option>`).join("")}</select>`;
+ const cols=["#0f766e","#1d4ed8","#7c3aed","#c2410c","#be185d","#111827"];
+ return `${sub("Advanced settings")}
+ <p class="tiny muted">Ye settings sirf is phone/browser par save hoti hain.</p>
+ <div class="card"><h3>Dikhawat</h3>
+  <div class="field"><label>Theme</label>${sel([["auto","Phone ke hisaab se"],["light","Light"],["dark","Dark"]],S.theme,"setS('theme',this.value)")}</div>
+  <div class="field"><label>Rang</label><div class="sw">${cols.map(c=>`<button style="background:${c}" class="${c===S.accent?"on":""}" onclick="setS('accent','${c}');render()" aria-label="${c}"></button>`).join("")}</div></div></div>
+ <div class="card"><h3>Billing</h3>
+  <div class="field"><label>Naye item ka default GST %</label>${sel([[0,"0%"],[5,"5%"],[12,"12%"],[18,"18%"],[28,"28%"]],S.defGst,"setS('defGst',Number(this.value))")}</div>
+  <div class="field"><label>Kam stock ki limit (isse kam ya barabar par alert)</label><input type="number" inputmode="numeric" min="0" value="${S.lowStock}" onchange="setS('lowStock',Math.max(0,num(this.value)))"></div>
+  <div class="field"><label>Invoice ka size</label>${sel([["a4","A4 page"],["80","80mm thermal printer"]],S.paper,"setS('paper',this.value)")}</div>
+  <div class="field"><label>Invoice ke neeche likhna (footer)</label><input maxlength="120" value="${esc(S.footer)}" onchange="setS('footer',this.value.trim().slice(0,120))"></div>
+  <div class="field"><label>UPI ID (invoice aur WhatsApp par dikhega)</label><input placeholder="naam@upi" value="${esc(S.upi)}" onchange="setUpi(this.value)"></div>
+  <div class="field"><label>Coins dikhao</label><input type="checkbox" ${S.showCoins?"checked":""} onchange="setS('showCoins',this.checked)"></div></div>
+ <div class="card"><h3>Data aur server</h3><div class="row3" style="grid-template-columns:1fr 1fr"><button class="btn" onclick="checkServer()">Server check</button><button class="btn" onclick="exportJson()">Backup download</button></div>
+  <div class="row3" style="grid-template-columns:1fr 1fr"><button class="btn" onclick="exportCsv()">Bills CSV</button><button class="btn" onclick="resetS()">Settings reset</button></div></div>
+ <div class="card"><button class="btn block" onclick="logout()">🚪 Log out</button></div>`}
+function setUpi(v){v=v.trim();if(v&&!/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(v)){toast("UPI ID galat lag rahi hai (jaise naam@upi)",true);render();return}setS("upi",v)}
+async function checkServer(){const t0=performance.now();toast("Check ho raha hai…");const ok=await ping();toast(ok?"Server theek hai ✅ ("+Math.round(performance.now()-t0)+" ms)":"Server nahi mil raha",!ok)}
+function resetS(){if(confirm("Saari local settings default par jayengi. Theek hai?")){S={...DEF};saveS();render();toast("Settings reset ho gayi")}}
+
+/* ---------- PLAN ---------- */
+function pgPlans(){return `${sub("₹51 Plan")}<div class="card"><span class="pill">SHOPBILL PRO</span><h3 style="margin-top:10px">₹51 purchase</h3><p>Paid features ₹51 plan se unlock honge.</p><span class="pill">PAYMENT SETUP PENDING</span><p class="muted">Payment abhi chalu nahi hai. Koi paisa nahi katega.</p><button class="btn" disabled>Payment jaldi aa raha hai</button></div>`}
+
+const PAGES={home:pgHome,bill:pgBill,products:pgProducts,customers:pgCustomers,more:pgMore,bills:pgBills,reports:pgReports,coins:pgCoins,profile:pgProfile,settings:pgSettings,plans:pgPlans};
+const AFTER={bill:renderLines,products:plist,customers:clist,bills:blist,reports:report};
+
+/* ---------- start ---------- */
+applyTheme();
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",applyTheme)}catch{}
+setMode("login");
+boot();
+</script>
+</body>
+</html>
