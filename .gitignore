@@ -1,0 +1,9 @@
+node_modules/
+# local database (users ka data) kabhi commit mat karo
+data/
+db.json
+*.tmp
+.env
+.env.*
+.DS_Store
+npm-debug.log*
